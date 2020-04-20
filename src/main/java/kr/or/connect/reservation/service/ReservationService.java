@@ -11,13 +11,13 @@ public interface ReservationService {
 
 	public int getTotalCount();
 
-	public int getCountByCategory(Integer category_id);
+	public int getCountByCategory(Integer categoryId);
 
 	public List<Promotion> getPromotions();
 
 	public List<Product> getAllProduct(Integer start);
 
-	public List<Product> getProductByCategory(Integer category_id, Integer start);
+	public List<Product> getProductByCategory(Integer categoryId, Integer start);
 
 	public List<Category> getCategories();
 }

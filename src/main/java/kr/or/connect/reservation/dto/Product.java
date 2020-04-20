@@ -7,6 +7,7 @@ public class Product {
 	private String description;
 	private Integer id;
 	private String productImageUrl;
+	private Integer categoryId;
 
 	public Integer getDisplayInfoId() {
 		return displayInfoId;
@@ -59,7 +60,16 @@ public class Product {
 	@Override
 	public String toString() {
 		return "Product [displayInfoId=" + displayInfoId + ", placeName=" + placeName + ", content=" + content
-				+ ", description=" + description + ", id=" + id + ", productImageUrl=" + productImageUrl + "]";
+				+ ", description=" + description + ", id=" + id + ", productImageUrl=" + productImageUrl
+				+ ", categoryId=" + categoryId + "]";
+	}
+
+	public Integer getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Integer categoryId) {
+		this.categoryId = categoryId;
 	}
 
 }

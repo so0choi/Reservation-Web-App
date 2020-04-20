@@ -33,8 +33,8 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	@Override
-	public int getCountByCategory(Integer category_id) {
-		int count = productDao.selectCountCategory(category_id);
+	public int getCountByCategory(Integer categoryId) {
+		int count = productDao.selectCountCategory(categoryId);
 		return count;
 	}
 
@@ -53,8 +53,8 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	@Override
-	public List<Product> getProductByCategory(Integer category_id, Integer start) {
-		List<Product> prdList = productDao.selectByCategory(start, LIMIT, category_id);
+	public List<Product> getProductByCategory(Integer categoryId, Integer start) {
+		List<Product> prdList = productDao.selectByCategory(start, LIMIT, categoryId);
 		return prdList;
 	}
 
