@@ -1,8 +1,11 @@
 package kr.or.connect.reservation.dao;
 
 import static kr.or.connect.reservation.dao.ReservationSqls.SELECT_PROMOTION;
+import static kr.or.connect.reservation.dao.ReservationSqls.SELECT_PROMOTION_BY_CATEGORY;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -26,5 +29,11 @@ public class PromotionDao {
 	public List<Promotion> selectPromotionList() {
 
 		return jdbc.query(SELECT_PROMOTION, rowMapper);
+	}
+
+	public List<Promotion> selectPromotionByCategory(Integer categoryId) {
+		Map<String, Integer> params = new HashMap<>();
+		params.put("category_id", categoryId);
+		return jdbc.query(SELECT_PROMOTION_BY_CATEGORY, params, rowMapper);
 	}
 }

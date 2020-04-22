@@ -15,6 +15,8 @@ public interface ReservationService {
 
 	public List<Promotion> getPromotions();
 
+	public List<Promotion> getPromotionByCategory(Integer categoryId);
+
 	public List<Product> getAllProduct(Integer start);
 
 	public List<Product> getProductByCategory(Integer categoryId, Integer start);

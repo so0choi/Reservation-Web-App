@@ -30,7 +30,7 @@ public class DaoTest {
 //		}
 
 		PromotionDao promotionDao = ac.getBean(PromotionDao.class);
-		List<Promotion> promo = promotionDao.selectPromotionList();
+		List<Promotion> promo = promotionDao.selectPromotionByCategory(1);
 		for (Promotion p : promo) {
 			System.out.println(p);
 		}

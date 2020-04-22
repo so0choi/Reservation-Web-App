@@ -64,4 +64,10 @@ public class ReservationServiceImpl implements ReservationService {
 		return catList;
 	}
 
+	@Override
+	public List<Promotion> getPromotionByCategory(Integer categoryId) {
+		List<Promotion> promotions = promotionDao.selectPromotionByCategory(categoryId);
+		return promotions;
+	}
+
 }

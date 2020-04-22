@@ -2,6 +2,7 @@ package kr.or.connect.reservation.dto;
 
 public class Promotion {
 	private Integer id;
+	private Integer categoryId;
 	private Integer productId;
 	private String productImageUrl;
 
@@ -31,7 +32,16 @@ public class Promotion {
 
 	@Override
 	public String toString() {
-		return "Promotion [id=" + id + ", productId=" + productId + ", productImageUrl=" + productImageUrl + "]";
+		return "Promotion [id=" + id + ", categoryId=" + categoryId + ", productId=" + productId + ", productImageUrl="
+				+ productImageUrl + "]";
+	}
+
+	public Integer getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Integer categoryId) {
+		this.categoryId = categoryId;
 	}
 
 }

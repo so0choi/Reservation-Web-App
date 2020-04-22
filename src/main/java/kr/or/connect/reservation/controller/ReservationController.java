@@ -63,10 +63,21 @@ public class ReservationController {
 
 	@GetMapping(path = "/resetCount")
 	@ResponseBody
-	public String resetCount(@RequestParam(name = "category_id", required = false, defaultValue = "0") int categoryId) {
-		if (categoryId == 0) {
-			return Integer.toString(reservationService.getTotalCount());
-		} else
-			return Integer.toString(reservationService.getCountByCategory(categoryId));
+	public Integer resetCount(
+			@RequestParam(name = "category_id", required = false, defaultValue = "0") int categoryId) {
+		if (categoryId == 0)
+			return reservationService.getTotalCount();
+		else
+			return reservationService.getCountByCategory(categoryId);
+	}
+
+	@GetMapping(path = "/promotionItem")
+	@ResponseBody
+	public List<Promotion> promotionItem(
+			@RequestParam(name = "category_id", required = false, defaultValue = "0") int categoryId) {
+		if (categoryId == 0)
+			return reservationService.getPromotions();
+		else
+			return reservationService.getPromotionByCategory(categoryId);
 	}
 }

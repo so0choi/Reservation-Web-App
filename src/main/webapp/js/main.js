@@ -31,10 +31,10 @@ function slideShow(imgCnt){
 /*-------더보기 버튼 동작---------*/
 var more_btn = document.querySelector(".btn");
 var start = 4;
-
+var categoryId=0;
 more_btn.addEventListener('click',function(){
 	start+=4;
-	sendAjax("moreItem?start="+start,1);
+	sendAjax("moreItem?start="+start+"&category_id="+categoryId,1);
 	}
 );
 function replaceProduct(product_html,product){
@@ -73,34 +73,57 @@ function sendAjax(url,type){
 		var data = JSON.parse(request.responseText);
 		if(type==1) //더보기
 			return makeTemplate(data);
-		else if(type=2) //tab전환
+		else if(type==2) //tab전환
 			return showCategoryItems(data);
-		else(type=3)//count 바꾸기
+		else if(type==3)//count 바꾸기
 			return setNewCount(data);
+		else if(type==4) //promotion바꾸기
+			{console.log(data);
+			return setPromotions(data);
+			}
 	})
 	request.open("GET",url);
 	request.send();
 } 
+/*-------탭 이동에 따른 프로모션 변화--------*/
+function setPromotions(data){
+	var promotionHtml = document.querySelector("#promotionItem").innerHTML;
+	var ul = document.querySelector(".visual_img");
+	console.log(data[0].productImageUrl);
+	for(var i=0;i<data.length;i++){
+	var resultHtml = promotionHtml.replace("{productImageUrl}",data[i].productImageUrl);
+	
+	console.log(resultHtml);
+		if(i==0) ul.innerHTML = resultHtml;
+		else ul.innerHTML +=resultHtml;
+	}
+}
+
+
+
 
 /*-------탭 메뉴 동작 ---------*/
+
 var category_tab = document.querySelector("#menutab_ul");
+
 category_tab.addEventListener('click',function(evt){
-   var category_id = getCategoryId(evt);
-   sendAjax("categoryItem?category_id="+category_id,2);
-	sendAjax("resetCount?category_id="+category_id,3);
+	start=0;
+   getCategoryId(evt);
+   sendAjax("categoryItem?category_id="+categoryId,2);
+	sendAjax("resetCount?category_id="+categoryId,3);
+	sendAjax("promotionItem?category_id="+categoryId,4);
 })
+
 function setNewCount(newCount){
 	document.querySelector(".pink").innerText = newCount+"개";
 }
 
 function getCategoryId(evt){
 	var temp = evt.target.parentNode;
-	var category_id;
     if(temp.tagName!="LI") {
-    	category_id = temp.parentNode.getAttribute('data-category');
+    	categoryId = temp.parentNode.getAttribute('data-category');
     }
-    else category_id = temp.getAttribute('data-category');
-    return category_id;
+    else categoryId = temp.getAttribute('data-category');
 }
 
 function showCategoryItems(data){
@@ -109,7 +132,6 @@ function showCategoryItems(data){
 	   var product_html = document.querySelector("#itemList").innerHTML;
 	   var cid;
 		for(var i=0;i<data.length;i++){
-				console.log(data.length);
 				var product = data[i];
 				var resultHtml = replaceProduct(product_html,product);
 		    	if(i==0){
