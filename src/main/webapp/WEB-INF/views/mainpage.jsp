@@ -46,7 +46,7 @@
                                 <c:forEach items="${promotionList }" var="promotion">
                         
                                 <li><img src="${promotion.productImageUrl }"></li>
-                             
+                              <span class="img_btm_border"></span> <span class="img_right_border"></span> <span class="img_bg_gra"></span>
                                 </c:forEach>
                                  
                                 </ul>
@@ -149,7 +149,7 @@
 
     
     <script type="rv-template" id="promotionItem">
-    <li><img src="${productImageUrl}"></li>
+    <li><img src="{productImageUrl}"></li>
     </li>
     </script>
 

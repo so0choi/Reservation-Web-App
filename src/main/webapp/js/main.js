@@ -1,7 +1,7 @@
 
 /*-------프로모션 배너 슬라이딩---------*/
 var ul = document.querySelector(".visual_img");
-
+var interval;
 window.onload=function(){
     var firstItemClone = ul.firstElementChild.cloneNode(true);
     this.ul.appendChild(firstItemClone);
@@ -11,11 +11,12 @@ window.onload=function(){
     slideShow(imgCnt);
 };
 
+
 function slideShow(imgCnt){
     ul.style.left="0px";
     var count = 1;
 
-    setInterval(() => {
+    interval = setInterval(() => {
         ul.style.transition = "transform 0.5s ease-in 0.4s";
         ul.style.transform = "translateX(-"+ul.offsetWidth*count+"px)";
         count+=1;
@@ -27,6 +28,7 @@ function slideShow(imgCnt){
             count=1;
        }
     }, 2000);
+    return interval;
 };
 /*-------더보기 버튼 동작---------*/
 var more_btn = document.querySelector(".btn");
@@ -78,25 +80,38 @@ function sendAjax(url,type){
 		else if(type==3)//count 바꾸기
 			return setNewCount(data);
 		else if(type==4) //promotion바꾸기
-			{console.log(data);
 			return setPromotions(data);
-			}
 	})
 	request.open("GET",url);
 	request.send();
 } 
 /*-------탭 이동에 따른 프로모션 변화--------*/
 function setPromotions(data){
+	clearInterval(interval);
 	var promotionHtml = document.querySelector("#promotionItem").innerHTML;
 	var ul = document.querySelector(".visual_img");
-	console.log(data[0].productImageUrl);
 	for(var i=0;i<data.length;i++){
 	var resultHtml = promotionHtml.replace("{productImageUrl}",data[i].productImageUrl);
-	
-	console.log(resultHtml);
+
 		if(i==0) ul.innerHTML = resultHtml;
 		else ul.innerHTML +=resultHtml;
 	}
+	
+	if(data.length>1){
+		var firstItemClone = ul.firstElementChild.cloneNode(true);
+	    this.ul.appendChild(firstItemClone);
+	    var imgCnt = data.length+1;
+	    this.ul.style.width = (ul.offsetWidth * imgCnt); //갯수만큼 옆으로 width 늘린다
+	    
+	    slideShow(imgCnt);
+	    
+		}
+		else{
+			ul.style.left="0px";
+			ul.style.transition="none";
+			ul.style.transform="translateX(0px)";
+			
+		}
 }
 
 
@@ -145,5 +160,6 @@ function showCategoryItems(data){
 		    	else
 		    		right.innerHTML+=resultHtml;
 			}
+		
 
 }
