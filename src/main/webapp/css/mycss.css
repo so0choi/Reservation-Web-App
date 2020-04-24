@@ -7,7 +7,7 @@
 .visual_img{
     max-height:240px;
 }
-.visual_img li{
+.visual_img li img{
 width:414px; 
 overflow: hidden;
 max-height:initial;
