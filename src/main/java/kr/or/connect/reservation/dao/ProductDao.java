@@ -1,11 +1,8 @@
 package kr.or.connect.reservation.dao;
 
 import static kr.or.connect.reservation.dao.ReservationSqls.SELECT_ALL_PRODUCT;
-import static kr.or.connect.reservation.dao.ReservationSqls.SELECT_COUNT_ALL;
-import static kr.or.connect.reservation.dao.ReservationSqls.SELECT_COUNT_BY_CATEGORY;
 import static kr.or.connect.reservation.dao.ReservationSqls.SELECT_PRODUCT_BY_CATEGORY;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,16 +38,5 @@ public class ProductDao {
 		params.put("limit", limit);
 		params.put("category_id", categoryId);
 		return jdbc.query(SELECT_PRODUCT_BY_CATEGORY, params, rowMapper);
-	}
-
-	public int selectCountAll() {
-		return jdbc.queryForObject(SELECT_COUNT_ALL, Collections.emptyMap(), Integer.class);
-
-	}
-
-	public int selectCountCategory(Integer categoryId) {
-		Map<String, Integer> params = new HashMap<>();
-		params.put("category_id", categoryId);
-		return jdbc.queryForObject(SELECT_COUNT_BY_CATEGORY, params, Integer.class);
 	}
 }

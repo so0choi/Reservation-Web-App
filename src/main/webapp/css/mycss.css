@@ -1,15 +1,7 @@
 .visual_img li{
-    position:relative;
-    display:inline;
-    max-height:240px;
+    width:414px !important;
 
 }
-.visual_img{
-    height:280px;
+#menutab_ul li{
+	font-size:14px;
 }
-.visual_img li img{
-width:414px; 
-overflow: hidden;
-max-height:initial;
-margin-top:-50%;
-} 

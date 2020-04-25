@@ -27,18 +27,6 @@ public class ReservationServiceImpl implements ReservationService {
 	CategoryDao categoryDao;
 
 	@Override
-	public int getTotalCount() {
-		int count = productDao.selectCountAll();
-		return count;
-	}
-
-	@Override
-	public int getCountByCategory(Integer categoryId) {
-		int count = productDao.selectCountCategory(categoryId);
-		return count;
-	}
-
-	@Override
 	@Transactional
 	public List<Promotion> getPromotions() {
 		List<Promotion> promoList = promotionDao.selectPromotionList();

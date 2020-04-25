@@ -1,18 +1,18 @@
 
 /*-------프로모션 배너 슬라이딩---------*/
-var ul = document.querySelector(".visual_img");
 var interval;
 window.onload=function(){
+	var ul = document.querySelector(".visual_img");
     var firstItemClone = ul.firstElementChild.cloneNode(true);
-    this.ul.appendChild(firstItemClone);
+    ul.appendChild(firstItemClone);
     var imgCnt = ul.childElementCount;
-    this.ul.style.width = (ul.offsetWidth * imgCnt); //갯수만큼 옆으로 width 늘린다
+    ul.style.width = (ul.offsetWidth * imgCnt); //갯수만큼 옆으로 width 늘린다
     
     slideShow(imgCnt);
 };
 
-
 function slideShow(imgCnt){
+	var ul = document.querySelector(".visual_img");
     ul.style.left="0px";
     var count = 1;
 
@@ -30,15 +30,19 @@ function slideShow(imgCnt){
     }, 2000);
     return interval;
 };
+
 /*-------더보기 버튼 동작---------*/
 var more_btn = document.querySelector(".btn");
-var start = 4;
+
 var categoryId=0;
+	var start = 0;
 more_btn.addEventListener('click',function(){
 	start+=4;
 	sendAjax("moreItem?start="+start+"&category_id="+categoryId,1);
+	sendAjax("moreItem?start="+(start+4)+"&category_id="+categoryId,5);
 	}
 );
+
 function replaceProduct(product_html,product){
 	var resultHtml = product_html.replace("{id}",product.id)
 	.replace("{placeName}",product.placeName)
@@ -49,24 +53,27 @@ function replaceProduct(product_html,product){
 	return resultHtml
 }
 
+/*------------더보기 버튼 동작 아이템 추가--------------------------*/
  function makeTemplate(data){
     var left = document.querySelector(".wrap_event_box").firstElementChild;
     var right = left.nextElementSibling;
     var product_html = document.querySelector("#itemList").innerHTML;
 		for(var i=0;i<data.length;i++){
-			
 			var product = data[i];
 			var resultHtml = replaceProduct(product_html,product);
-			
 	    	if(i%2==0)
 	    		left.innerHTML += resultHtml;
 	    	else
 	    		right.innerHTML += resultHtml;
-	    	
-	    	if(product.id == "${count}") more_btn.style.display="none";
 		}
-
 };
+
+function checkIfMoreItem(data){
+	if(data.length===0){
+		document.querySelector(".btn").style.display='none';
+	}
+}
+
 /*---------------------ajax-----------------*/
 
 function sendAjax(url,type){
@@ -81,85 +88,94 @@ function sendAjax(url,type){
 			return setNewCount(data);
 		else if(type==4) //promotion바꾸기
 			return setPromotions(data);
+		else if(type==5)
+			return checkIfMoreItem(data);
 	})
 	request.open("GET",url);
 	request.send();
 } 
 /*-------탭 이동에 따른 프로모션 변화--------*/
 function setPromotions(data){
+	document.querySelector(".btn").style.display='block';
 	clearInterval(interval);
 	var promotionHtml = document.querySelector("#promotionItem").innerHTML;
 	var ul = document.querySelector(".visual_img");
 	for(var i=0;i<data.length;i++){
 	var resultHtml = promotionHtml.replace("{productImageUrl}",data[i].productImageUrl);
-
 		if(i==0) ul.innerHTML = resultHtml;
 		else ul.innerHTML +=resultHtml;
 	}
 	
 	if(data.length>1){
 		var firstItemClone = ul.firstElementChild.cloneNode(true);
-	    this.ul.appendChild(firstItemClone);
+	    ul.appendChild(firstItemClone);
 	    var imgCnt = data.length+1;
-	    this.ul.style.width = (ul.offsetWidth * imgCnt); //갯수만큼 옆으로 width 늘린다
-	    
+	    ul.style.width = (ul.offsetWidth * imgCnt); //갯수만큼 옆으로 width 늘린다
 	    slideShow(imgCnt);
-	    
 		}
 		else{
-			ul.style.left="0px";
 			ul.style.transition="none";
 			ul.style.transform="translateX(0px)";
 			
 		}
 }
 
-
-
-
 /*-------탭 메뉴 동작 ---------*/
 
 var category_tab = document.querySelector("#menutab_ul");
-
 category_tab.addEventListener('click',function(evt){
-	start=0;
-   getCategoryId(evt);
-   sendAjax("categoryItem?category_id="+categoryId,2);
-	sendAjax("resetCount?category_id="+categoryId,3);
-	sendAjax("promotionItem?category_id="+categoryId,4);
+	if(getCategoryId(evt)){
+		 var menu = category_tab.children;
+		 //이전 메뉴 활성화 삭제
+		 menu[0].firstElementChild.className="anchor"
+		 for(var i=0;i<menu.length;i++){
+			   if(menu[i].getAttribute('data-category')===categoryId){
+				   menu[i].firstElementChild.className="anchor";
+				   break;
+			   }
+		   }
+	   categoryId = getCategoryId(evt); //클릭된 카테고리id로 바꾸기
+	   //클릭된 메뉴 활성화
+	   for(var i=0;i<menu.length;i++){
+		   if(menu[i].getAttribute('data-category')===categoryId){
+			   menu[i].firstElementChild.className="anchor active";
+			   break;
+		   }
+	   }
+	   start=0;
+	   sendAjax("categoryItem?category_id="+categoryId,2);
+		sendAjax("resetCount?category_id="+categoryId,3);
+		sendAjax("promotionItem?category_id="+categoryId,4);
+	}
+   
 })
-
+/*-----------------선택한 카테고리 id 받아오기--------------*/
+function getCategoryId(evt){
+	var categoryIdTemp;
+	var temp = evt.target.parentNode;
+    if(temp.tagName!="LI") {
+    	categoryIdTemp = temp.parentNode.getAttribute('data-category');
+    }
+    else categoryIdTemp = temp.getAttribute('data-category');
+    return categoryIdTemp;
+}
+/*-----------------선택한 카테고리 공연 개수--------------*/
 function setNewCount(newCount){
 	document.querySelector(".pink").innerText = newCount+"개";
 }
-
-function getCategoryId(evt){
-	var temp = evt.target.parentNode;
-    if(temp.tagName!="LI") {
-    	categoryId = temp.parentNode.getAttribute('data-category');
-    }
-    else categoryId = temp.getAttribute('data-category');
-}
-
+/*-----------------선택한 카테고리 아이템 출력--------------*/
 function showCategoryItems(data){
 	 var left = document.querySelector(".wrap_event_box").firstElementChild;
 	   var right = left.nextElementSibling;
 	   var product_html = document.querySelector("#itemList").innerHTML;
-	   var cid;
+	   left.innerHTML = "";
+	   right.innerHTML="";
 		for(var i=0;i<data.length;i++){
 				var product = data[i];
 				var resultHtml = replaceProduct(product_html,product);
-		    	if(i==0){
-		    		left.innerHTML = resultHtml;
-		    		cid = product.categoryId;
-		    	}
-		    	else if(i==1)
-		    		right.innerHTML = resultHtml;
-		    	else if (i==2)
+		    	if(i%2==0)
 		    		left.innerHTML += resultHtml;
 		    	else
-		    		right.innerHTML+=resultHtml;
-			}
-		
-
+		    		right.innerHTML += resultHtml;
+		}
 }

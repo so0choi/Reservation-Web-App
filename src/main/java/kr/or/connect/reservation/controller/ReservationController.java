@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.or.connect.reservation.dto.Category;
 import kr.or.connect.reservation.dto.Product;
 import kr.or.connect.reservation.dto.Promotion;
 import kr.or.connect.reservation.service.ReservationService;
@@ -24,10 +25,14 @@ public class ReservationController {
 			ModelMap model) {
 		// 상품 목록 구하기
 		List<Product> productList;
-		int count;
+		List<Category> categoryList;
+		int count = 0;
 
 		productList = reservationService.getAllProduct(start);
-		count = reservationService.getTotalCount();
+		categoryList = reservationService.getCategories();
+		for (Category category : categoryList) {
+			count += category.getCount();
+		}
 
 		List<Promotion> promotionList = reservationService.getPromotions();
 
@@ -65,10 +70,16 @@ public class ReservationController {
 	@ResponseBody
 	public Integer resetCount(
 			@RequestParam(name = "category_id", required = false, defaultValue = "0") int categoryId) {
-		if (categoryId == 0)
-			return reservationService.getTotalCount();
-		else
-			return reservationService.getCountByCategory(categoryId);
+		int count = 0;
+		List<Category> categoryList = reservationService.getCategories();
+		if (categoryId == 0) {
+
+			for (Category category : categoryList) {
+				count += category.getCount();
+			}
+		} else
+			count = categoryList.get(categoryId - 1).getCount();
+		return count;
 	}
 
 	@GetMapping(path = "/promotionItem")

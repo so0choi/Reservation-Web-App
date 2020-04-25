@@ -9,10 +9,6 @@ import kr.or.connect.reservation.dto.Promotion;
 public interface ReservationService {
 	public static final Integer LIMIT = 4;
 
-	public int getTotalCount();
-
-	public int getCountByCategory(Integer categoryId);
-
 	public List<Promotion> getPromotions();
 
 	public List<Promotion> getPromotionByCategory(Integer categoryId);
