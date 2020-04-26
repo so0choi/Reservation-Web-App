@@ -2,12 +2,11 @@ package kr.or.connect.reservation.dto;
 
 public class Product {
 	private Integer displayInfoId;
+	private Integer productId;
+	private String productDescription;
 	private String placeName;
-	private String content;
-	private String description;
-	private Integer id;
+	private String productContent;
 	private String productImageUrl;
-	private Integer categoryId;
 
 	public Integer getDisplayInfoId() {
 		return displayInfoId;
@@ -15,6 +14,22 @@ public class Product {
 
 	public void setDisplayInfoId(Integer displayInfoId) {
 		this.displayInfoId = displayInfoId;
+	}
+
+	public Integer getProductId() {
+		return productId;
+	}
+
+	public void setProductId(Integer productId) {
+		this.productId = productId;
+	}
+
+	public String getProductDescription() {
+		return productDescription;
+	}
+
+	public void setProductDescription(String productDescription) {
+		this.productDescription = productDescription;
 	}
 
 	public String getPlaceName() {
@@ -25,28 +40,12 @@ public class Product {
 		this.placeName = placeName;
 	}
 
-	public String getContent() {
-		return content;
+	public String getProductContent() {
+		return productContent;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
+	public void setProductContent(String productContent) {
+		this.productContent = productContent;
 	}
 
 	public String getProductImageUrl() {
@@ -59,17 +58,9 @@ public class Product {
 
 	@Override
 	public String toString() {
-		return "Product [displayInfoId=" + displayInfoId + ", placeName=" + placeName + ", content=" + content
-				+ ", description=" + description + ", id=" + id + ", productImageUrl=" + productImageUrl
-				+ ", categoryId=" + categoryId + "]";
-	}
-
-	public Integer getCategoryId() {
-		return categoryId;
-	}
-
-	public void setCategoryId(Integer categoryId) {
-		this.categoryId = categoryId;
+		return "Product [displayInfoId=" + displayInfoId + ", productId=" + productId + ", productDescription="
+				+ productDescription + ", placeName=" + placeName + ", productContent=" + productContent
+				+ ", productImageUrl=" + productImageUrl + "]";
 	}
 
 }

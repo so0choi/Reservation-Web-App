@@ -21,7 +21,7 @@ public class ReservationApiController {
 	@Autowired
 	ReservationService reservationService;
 
-	@GetMapping("/product")
+	@GetMapping("/products")
 	public Map<String, Object> products(@RequestParam(name = "start", required = false, defaultValue = "0") int start,
 			@RequestParam(name = "categoryId", required = false, defaultValue = "0") int categoryId) {
 		List<Product> plist;
@@ -35,12 +35,13 @@ public class ReservationApiController {
 			}
 		} else {
 			plist = reservationService.getProductByCategory(categoryId, start);
-			totalCount = clist.get(categoryId).getCount();
+			totalCount = clist.get(categoryId - 1).getCount();
 		}
 
 		Map<String, Object> map = new HashMap<>();
-		map.put("item", plist);
 		map.put("totalCount", totalCount);
+		map.put("item", plist);
+
 		return map;
 	}
 
