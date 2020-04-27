@@ -104,12 +104,12 @@
                         <li class="item">
                             <a href="detail.html" class="item_book">
                                 <div class="item_preview"> 
-                                	<img alt="${product.description }" class="img_thumb" src="${product.productImageUrl }">                                    
+                                	<img alt="${product.productDescription }" class="img_thumb" src="${product.productImageUrl }">                                    
                                		<span class="img_border"></span> 
                                 </div>
                                 <div class="event_txt">
-                                    <h4 class="event_txt_tit"> <span>${product.description }</span> <small class="sm">샤롯데 씨어터</small> </h4>
-                                    <p class="event_txt_dsc">${product.content }
+                                    <h4 class="event_txt_tit"> <span>${product.productDescription }</span> <small class="sm">샤롯데 씨어터</small> </h4>
+                                    <p class="event_txt_dsc">${product.productContent }
                                     </p>
                                 </div>
                             </a>
@@ -122,12 +122,12 @@
                         <li class="item">
                             <a href="detail.html" class="item_book">
                                 <div class="item_preview"> 
-                                	<img alt="${product.description }" class="img_thumb" src="${product.productImageUrl }">                                    
+                                	<img alt="${product.productDescription }" class="img_thumb" src="${product.productImageUrl }">                                    
                                		<span class="img_border"></span> 
                                 </div>
                                 <div class="event_txt">
-                                    <h4 class="event_txt_tit"> <span>${product.description }</span> <small class="sm">샤롯데 씨어터</small> </h4>
-                                    <p class="event_txt_dsc">${product.content }
+                                    <h4 class="event_txt_tit"> <span>${product.productDescription }</span> <small class="sm">샤롯데 씨어터</small> </h4>
+                                    <p class="event_txt_dsc">${product.productContent }
                                     </p>
                                 </div>
                             </a>

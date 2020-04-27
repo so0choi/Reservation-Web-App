@@ -1,6 +1,8 @@
 package kr.or.connect.reservation.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -56,39 +58,32 @@ public class ReservationController {
 		return productList;
 	}
 
-	@GetMapping(path = "/categoryItem")
+	@GetMapping(path = "/category")
 	@ResponseBody
-	public List<Product> categoryItem(@RequestParam(name = "start", required = false, defaultValue = "0") int start,
+	public Map<String, Object> category(@RequestParam(name = "start", required = false, defaultValue = "0") int start,
 			@RequestParam(name = "category_id", required = true, defaultValue = "0") int categoryId) {
-		if (categoryId == 0)
-			return reservationService.getAllProduct(start);
-		else
-			return reservationService.getProductByCategory(categoryId, start);
-	}
-
-	@GetMapping(path = "/resetCount")
-	@ResponseBody
-	public Integer resetCount(
-			@RequestParam(name = "category_id", required = false, defaultValue = "0") int categoryId) {
-		int count = 0;
+		List<Product> productList;
 		List<Category> categoryList = reservationService.getCategories();
+		;
+		int totalCount = 0;
+		List<Promotion> promotionList;
 		if (categoryId == 0) {
-
+			productList = reservationService.getAllProduct(start);
+			promotionList = reservationService.getPromotions();
 			for (Category category : categoryList) {
-				count += category.getCount();
+				totalCount += category.getCount();
 			}
-		} else
-			count = categoryList.get(categoryId - 1).getCount();
-		return count;
+		} else {
+			productList = reservationService.getProductByCategory(categoryId, start);
+			promotionList = reservationService.getPromotionByCategory(categoryId);
+			totalCount = categoryList.get(categoryId - 1).getCount();
+		}
+		Map<String, Object> map = new HashMap<>();
+		map.put("totalCount", totalCount);
+		map.put("productList", productList);
+		map.put("promotionList", promotionList);
+
+		return map;
 	}
 
-	@GetMapping(path = "/promotionItem")
-	@ResponseBody
-	public List<Promotion> promotionItem(
-			@RequestParam(name = "category_id", required = false, defaultValue = "0") int categoryId) {
-		if (categoryId == 0)
-			return reservationService.getPromotions();
-		else
-			return reservationService.getPromotionByCategory(categoryId);
-	}
 }

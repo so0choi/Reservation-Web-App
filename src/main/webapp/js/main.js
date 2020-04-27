@@ -46,10 +46,10 @@ more_btn.addEventListener('click',function(){
 function replaceProduct(product_html,product){
 	var resultHtml = product_html.replace("{id}",product.id)
 	.replace("{placeName}",product.placeName)
-.replace("{description}",product.description)
-.replace("{description}",product.description)
+.replace("{description}",product.productDescription)
+.replace("{description}",product.productDescription)
 	.replace("{imageUrl}",product.productImageUrl)
-	.replace("{content}",product.content);
+	.replace("{content}",product.productContent);
 	return resultHtml
 }
 
