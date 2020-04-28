@@ -1,16 +1,15 @@
 
 /*-------프로모션 배너 슬라이딩---------*/
-var interval;
 window.onload=function(){
 	var ul = document.querySelector(".visual_img");
     var firstItemClone = ul.firstElementChild.cloneNode(true);
     ul.appendChild(firstItemClone);
     var imgCnt = ul.childElementCount;
-    ul.style.width = (ul.offsetWidth * imgCnt); //갯수만큼 옆으로 width 늘린다
-    
+    ul.style.width = (ul.offsetWidth * imgCnt); // 갯수만큼 옆으로 width 늘린다
     slideShow(imgCnt);
 };
 
+var interval;
 function slideShow(imgCnt){
 	var ul = document.querySelector(".visual_img");
     ul.style.left="0px";
@@ -22,7 +21,7 @@ function slideShow(imgCnt){
         count+=1;
 
        if(count===imgCnt+1){
-           //처음으로
+           // 처음으로
            ul.style.transition='none';
            ul.style.transform = 'translateX(0px)';
             count=1;
@@ -33,27 +32,26 @@ function slideShow(imgCnt){
 
 /*-------더보기 버튼 동작---------*/
 var more_btn = document.querySelector(".btn");
-
 var categoryId=0;
 var start = 0;
 var totalCount = document.querySelector(".pink").innerText;
-totalCount = totalCount.replace(/[^0-9]/g,'');
+totalCount = totalCount.replace(/[^0-9]/g,''); // 문자열에서 숫자만 추출
 
 more_btn.addEventListener('click',function(){
 	start+=4;
 	sendAjax("moreItem?start="+start+"&category_id="+categoryId,1);
 	if(start+4>totalCount)
-		document.querySelector(".btn").style.display='none';
+		more_btn.style.display='none';
 	}
 );
 
 function replaceProduct(product_html,product){
 	var resultHtml = product_html.replace("{id}",product.id)
-	.replace("{placeName}",product.placeName)
-.replace("{description}",product.productDescription)
-.replace("{description}",product.productDescription)
-	.replace("{imageUrl}",product.productImageUrl)
-	.replace("{content}",product.productContent);
+								.replace("{placeName}",product.placeName)
+								.replace("{description}",product.productDescription)
+								.replace("{description}",product.productDescription)
+								.replace("{imageUrl}",product.productImageUrl)
+								.replace("{content}",product.productContent);
 	return resultHtml
 }
 
@@ -75,12 +73,13 @@ function replaceProduct(product_html,product){
 /*---------------------ajax-----------------*/
 
 function sendAjax(url,type){
-	var request = new XMLHttpRequest();
+	var request =
+		new XMLHttpRequest();
 	request.addEventListener("load", function(){
 		var data = JSON.parse(request.responseText);
-		if(type==1) //더보기
+		if(type==1) // 더보기
 			return makeTemplate(data);
-		else if(type==2) //tab전환
+		else if(type==2) // tab전환
 			return changeItemsByTab(data);
 	})
 	request.open("GET",url);
@@ -95,10 +94,9 @@ function changeItemsByTab(data){
 	setNewCount(data.totalCount);
 }
 
-
 /*-------탭 이동에 따른 프로모션 변화--------*/
 function setPromotions(data){
-	document.querySelector(".btn").style.display='block'; //더보기 버튼 다시 보이도록
+	more_btn.style.display='block'; // 더보기 버튼 다시 보이도록
 	clearInterval(interval);
 	var promotionHtml = document.querySelector("#promotionItem").innerHTML;
 	var ul = document.querySelector(".visual_img");
@@ -112,7 +110,7 @@ function setPromotions(data){
 		var firstItemClone = ul.firstElementChild.cloneNode(true);
 	    ul.appendChild(firstItemClone);
 	    var imgCnt = data.length+1;
-	    ul.style.width = (ul.offsetWidth * imgCnt); //갯수만큼 옆으로 width 늘린다
+	    ul.style.width = (ul.offsetWidth * imgCnt); // 갯수만큼 옆으로 width 늘린다
 	    slideShow(imgCnt);
 		}
 		else{
@@ -128,7 +126,7 @@ var category_tab = document.querySelector("#menutab_ul");
 category_tab.addEventListener('click',function(evt){
 	if(getCategoryId(evt)){
 		 var menu = category_tab.children;
-		 //이전 메뉴 활성화 삭제
+		 // 이전 메뉴 활성화 삭제
 		 menu[0].firstElementChild.className="anchor"
 		 for(var i=0;i<menu.length;i++){
 			   if(menu[i].getAttribute('data-category')===categoryId){
@@ -136,8 +134,8 @@ category_tab.addEventListener('click',function(evt){
 				   break;
 			   }
 		   }
-	   categoryId = getCategoryId(evt); //클릭된 카테고리id로 바꾸기
-	   //클릭된 메뉴 활성화
+	   categoryId = getCategoryId(evt); // 클릭된 카테고리id로 바꾸기
+	   // 클릭된 메뉴 활성화
 	   for(var i=0;i<menu.length;i++){
 		   if(menu[i].getAttribute('data-category')===categoryId){
 			   menu[i].firstElementChild.className="anchor active";
@@ -172,11 +170,11 @@ function showCategoryItems(data){
 	   left.innerHTML = "";
 	   right.innerHTML="";
 		for(var i=0;i<data.length;i++){
-				var product = data[i];
-				var resultHtml = replaceProduct(product_html,product);
-		    	if(i%2==0)
-		    		left.innerHTML += resultHtml;
-		    	else
-		    		right.innerHTML += resultHtml;
+			var product = data[i];
+			var resultHtml = replaceProduct(product_html,product);
+		   	if(i%2==0)
+		    	left.innerHTML += resultHtml;
+		   	else
+		    	right.innerHTML += resultHtml;
 		}
 }
