@@ -35,11 +35,15 @@ function slideShow(imgCnt){
 var more_btn = document.querySelector(".btn");
 
 var categoryId=0;
-	var start = 0;
+var start = 0;
+var totalCount = document.querySelector(".pink").innerText;
+totalCount = totalCount.replace(/[^0-9]/g,'');
+
 more_btn.addEventListener('click',function(){
 	start+=4;
 	sendAjax("moreItem?start="+start+"&category_id="+categoryId,1);
-	sendAjax("moreItem?start="+(start+4)+"&category_id="+categoryId,5);
+	if(start+4>totalCount)
+		document.querySelector(".btn").style.display='none';
 	}
 );
 
@@ -68,12 +72,6 @@ function replaceProduct(product_html,product){
 		}
 };
 
-function checkIfMoreItem(data){
-	if(data.length===0){
-		document.querySelector(".btn").style.display='none';
-	}
-}
-
 /*---------------------ajax-----------------*/
 
 function sendAjax(url,type){
@@ -83,20 +81,24 @@ function sendAjax(url,type){
 		if(type==1) //더보기
 			return makeTemplate(data);
 		else if(type==2) //tab전환
-			return showCategoryItems(data);
-		else if(type==3)//count 바꾸기
-			return setNewCount(data);
-		else if(type==4) //promotion바꾸기
-			return setPromotions(data);
-		else if(type==5)
-			return checkIfMoreItem(data);
+			return changeItemsByTab(data);
 	})
 	request.open("GET",url);
 	request.send();
 } 
+
+
+/*------------탭이동----------------*/
+function changeItemsByTab(data){
+	showCategoryItems(data.productList);
+	setPromotions(data.promotionList);
+	setNewCount(data.totalCount);
+}
+
+
 /*-------탭 이동에 따른 프로모션 변화--------*/
 function setPromotions(data){
-	document.querySelector(".btn").style.display='block';
+	document.querySelector(".btn").style.display='block'; //더보기 버튼 다시 보이도록
 	clearInterval(interval);
 	var promotionHtml = document.querySelector("#promotionItem").innerHTML;
 	var ul = document.querySelector(".visual_img");
@@ -143,9 +145,7 @@ category_tab.addEventListener('click',function(evt){
 		   }
 	   }
 	   start=0;
-	   sendAjax("categoryItem?category_id="+categoryId,2);
-		sendAjax("resetCount?category_id="+categoryId,3);
-		sendAjax("promotionItem?category_id="+categoryId,4);
+	   sendAjax("category?category_id="+categoryId,2);
 	}
    
 })
@@ -161,6 +161,7 @@ function getCategoryId(evt){
 }
 /*-----------------선택한 카테고리 공연 개수--------------*/
 function setNewCount(newCount){
+	totalCount = newCount;
 	document.querySelector(".pink").innerText = newCount+"개";
 }
 /*-----------------선택한 카테고리 아이템 출력--------------*/

@@ -58,31 +58,31 @@ public class ReservationController {
 		return productList;
 	}
 
-	@GetMapping(path = "/category")
+	@GetMapping(path="/category")
 	@ResponseBody
 	public Map<String, Object> category(@RequestParam(name = "start", required = false, defaultValue = "0") int start,
-			@RequestParam(name = "category_id", required = true, defaultValue = "0") int categoryId) {
+			@RequestParam(name = "category_id", required = true, defaultValue = "0") int categoryId){
 		List<Product> productList;
-		List<Category> categoryList = reservationService.getCategories();
-		;
-		int totalCount = 0;
+		List<Category> categoryList=reservationService.getCategories();;
+		int totalCount=0;
 		List<Promotion> promotionList;
-		if (categoryId == 0) {
+		if(categoryId==0) {
 			productList = reservationService.getAllProduct(start);
 			promotionList = reservationService.getPromotions();
 			for (Category category : categoryList) {
 				totalCount += category.getCount();
 			}
-		} else {
+		}
+		else {
 			productList = reservationService.getProductByCategory(categoryId, start);
 			promotionList = reservationService.getPromotionByCategory(categoryId);
-			totalCount = categoryList.get(categoryId - 1).getCount();
+			totalCount = categoryList.get(categoryId-1).getCount();
 		}
 		Map<String, Object> map = new HashMap<>();
 		map.put("totalCount", totalCount);
 		map.put("productList", productList);
-		map.put("promotionList", promotionList);
-
+		map.put("promotionList",promotionList);
+		
 		return map;
 	}
 
